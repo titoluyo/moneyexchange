@@ -21,11 +21,9 @@ export class AppComponent implements OnInit {
 
   onCalculate() {
     const self = this;
-    self.exchangeService.getRates()
-      .subscribe((exchange: Exchange) => {
-        console.log('version2');
-        console.log(exchange);
-        this.model.eur = this.model.usd * exchange.rates['EUR'];
-      })
+    self.exchangeService.convertCurrency('USD', 'EUR', this.model.usd)
+      .subscribe((value: number) => {
+        this.model.eur = value;
+      });
   }
 }
