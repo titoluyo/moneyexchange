@@ -3,15 +3,16 @@ import { CacheService } from './cache.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Exchange } from '../models/exchange';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class ExchangeService {
 
-    private cache = new CacheService();
-    private host = 'http://localhost:5000';
+    private host = environment.hostExchangeService;
     private urlExchange = '/latest';
 
     constructor(
+        private cache: CacheService,
         private http: HttpClient
     ) {}
 

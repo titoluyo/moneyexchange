@@ -7,7 +7,7 @@ import { CurrencyMaskModule } from "ng2-currency-mask";
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-
+import { CacheService } from './services/cache.service';
 import { ExchangeService } from './services/exchange.service';
 
 @NgModule({
@@ -22,6 +22,7 @@ import { ExchangeService } from './services/exchange.service';
     CurrencyMaskModule
   ],
   providers: [
+    CacheService,
     ExchangeService
   ],
   bootstrap: [AppComponent]

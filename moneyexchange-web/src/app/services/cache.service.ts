@@ -29,6 +29,7 @@ import { Observable, Subject, throwError } from 'rxjs';
 import { catchError, tap} from 'rxjs/operators';
 import * as _ from 'lodash';
 import {HttpErrorResponse} from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 interface CacheContent {
     expiry: number;
@@ -47,8 +48,7 @@ export class CacheService {
 
     private cache: Map<string, CacheContent> =  new Map<string, CacheContent>();
     private inFlightObservables: Map<string, Subject<any>> = new Map<string, Subject<any>>();
-    // private cacheTimeout: number = 600000; // 10 minutes
-    private cacheTimeout: number = 60000; // 10 minutes
+    private cacheTimeout: number = environment.cacheTimeout * 60 * 1000; // convert milliseconds to minutes
 
     private options = {
         verbose: false,
