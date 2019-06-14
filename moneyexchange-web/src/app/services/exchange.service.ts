@@ -8,7 +8,7 @@ export class ExchangeService {
 
     private cache = new CacheService();
     private host = 'http://localhost:5000';
-    private urlExchange = '/api/exchange';
+    private urlExchange = '/latest';
 
     constructor(
         private http: HttpClient
