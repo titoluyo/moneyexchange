@@ -2,15 +2,28 @@ import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 
+import { ExchangeService } from './services/exchange.service';
+import { CurrencyMaskModule } from "ng2-currency-mask";
+import { FormsModule } from '@angular/forms';
+import { CacheService } from './services/cache.service';
+import { HttpClientModule } from '@angular/common/http';
+
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule,
+        CurrencyMaskModule,
+        FormsModule,
+        HttpClientModule
       ],
       declarations: [
         AppComponent
       ],
+      providers: [
+        CacheService,
+        ExchangeService
+      ]
     }).compileComponents();
   }));
 
@@ -20,16 +33,4 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'moneyexchange-web'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('moneyexchange-web');
-  });
-
-  it('should render title in a h1 tag', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to moneyexchange-web!');
-  });
 });
