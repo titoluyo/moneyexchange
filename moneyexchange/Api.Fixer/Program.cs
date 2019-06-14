@@ -31,12 +31,23 @@ namespace Api.Fixer
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureLogging(ConfigureLog)
                 .UseStartup<Startup>()
                 .Build();
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureLogging(ConfigureLog)
                 .UseStartup<Startup>();
+
+        public static void ConfigureLog(WebHostBuilderContext hostingContext, ILoggingBuilder logging)
+        {
+            logging.ClearProviders();
+            logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+            logging.AddConsole();
+            logging.AddDebug();
+            logging.AddEventSourceLogger();
+        }
 
     }
 }

@@ -21,9 +21,12 @@ namespace Api.Fixer
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly ILogger _logger;
+
+        public Startup(IConfiguration configuration, ILogger<Startup> logger)
         {
             Configuration = configuration;
+            _logger = logger;
         }
 
         public IConfiguration Configuration { get; }
@@ -41,6 +44,7 @@ namespace Api.Fixer
             services.AddDbContext<AppDbContext>(options => {
                 options.UseInMemoryDatabase("exchange-api-in-memory");
             });
+            _logger.LogInformation("Added AddDbContext");
 
             services.AddScoped<IExchangeService, ExchangeService>();
             services.AddScoped<IExchangeRepository, ExchangeRepository>();
@@ -51,6 +55,7 @@ namespace Api.Fixer
         {
             if (env.IsDevelopment())
             {
+                _logger.LogInformation("Service is in Development mode");
                 app.UseDeveloperExceptionPage();
             }
             else

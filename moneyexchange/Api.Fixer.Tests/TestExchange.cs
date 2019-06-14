@@ -9,11 +9,20 @@ using Xunit;
 using Microsoft.EntityFrameworkCore;
 using Api.Fixer.Data.Repositories;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
+using Moq;
 
 namespace Api.Fixer.Tests
 {
     public class TestExchange
     {
+        private readonly Mock<ILogger<ExchangeRepository>> _mockLogger;
+
+        public TestExchange()
+        {
+            _mockLogger = new Mock<ILogger<ExchangeRepository>>();
+        }
+
         [Fact]
         public async void Add_WhenHaveNoEmail()
         {
@@ -27,6 +36,7 @@ namespace Api.Fixer.Tests
 
         private IExchangeRepository GetInMemoryExchangeRepository()
         {
+            
             DbContextOptions<AppDbContext> options;
             var builder = new DbContextOptionsBuilder<AppDbContext>();
             builder.UseInMemoryDatabase();
@@ -34,7 +44,7 @@ namespace Api.Fixer.Tests
             AppDbContext appDbContext = new AppDbContext(options);
             appDbContext.Database.EnsureDeleted();
             appDbContext.Database.EnsureCreated();
-            return new ExchangeRepository(appDbContext);
+            return new ExchangeRepository(_mockLogger.Object, appDbContext);
         }
     }
 }

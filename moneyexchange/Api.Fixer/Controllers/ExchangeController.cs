@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Api.Fixer.Entities;
 using Api.Fixer.Domain.Services;
+using Microsoft.Extensions.Logging;
 
 namespace Api.Fixer
 {
@@ -13,10 +14,15 @@ namespace Api.Fixer
     public class ExchangeController : ControllerBase
     {
         private readonly IExchangeService _exchangeService;
+        private readonly ILogger _logger;
 
-        public ExchangeController(IExchangeService exchangeService)
+        public ExchangeController(
+            IExchangeService exchangeService,
+            ILogger<ExchangeController> logger
+            )
         {
             _exchangeService = exchangeService;
+            _logger = logger;
         }
 
         // GET latest
@@ -27,8 +33,16 @@ namespace Api.Fixer
             )
         {
             Exchange result = null;
-            var targets = symbols.Split(',');
-            result = await _exchangeService.GetLatestAsync(source, targets);
+            _logger.LogDebug($"ExchangeController.GetLatestAsync - source: {source}, symbols: {symbols}");
+            try
+            {
+                var targets = symbols.Split(',');
+                result = await _exchangeService.GetLatestAsync(source, targets);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(10001, ex, "Error in controller");
+            }
             return Ok(result);
         }
 
