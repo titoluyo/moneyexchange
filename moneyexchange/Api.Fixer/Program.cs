@@ -16,14 +16,16 @@ namespace Api.Fixer
     {
         public static void Main(string[] args)
         {
-            var host = BuildWebHost(args);
+            // /* For real SQL Server */
+            // CreateWebHostBuilder(args).Build().Run();
 
+            // /* In Memory Database, for DEMO purposes */
+            var host = BuildWebHost(args);
             using (var scope = host.Services.CreateScope())
-                using (var context = scope.ServiceProvider.GetService<AppDbContext>())
+            using (var context = scope.ServiceProvider.GetService<AppDbContext>())
             {
                 context.Database.EnsureCreated();
             }
-
             host.Run();
         }
 
@@ -31,5 +33,10 @@ namespace Api.Fixer
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .Build();
+
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>();
+
     }
 }
